@@ -71,7 +71,10 @@ def validate_name(name):
     return len(parts) == 2 and all(part.isalpha() for part in parts)
 
 def validate_email(email):
-    return "@" in email and "." in email.split("@")[-1]
+    if "@" not in email or email.count("@") != 1:
+        return False
+    username, domain = email.split("@")
+    return username and "." in domain and domain.count(".") >= 1
 
 def main():
     name = input("Enter your name (First Last): ")
