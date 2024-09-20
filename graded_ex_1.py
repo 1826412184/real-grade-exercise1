@@ -46,34 +46,26 @@ def add_to_cart(cart, product, quantity):
     cart.append((product, quantity))
 
 def display_cart(cart):
-    total_cost = 0
     for product, quantity in cart:
-        cost = product[1] * quantity
-        total_cost += cost
-        print(f"{product[0]} - ${product[1]:.2f} x {quantity} = ${cost:.2f}")
-    print(f"Total cost: ${total_cost:.2f}")
+        print(f"{product[0]} - Quantity: {quantity} - Price: ${product[1] * quantity:.2f}")
 
 def generate_receipt(name, email, cart, total_cost, address):
     print("\n--- Receipt ---")
-    print(f"Customer: {name}")
+    print(f"Name: {name}")
     print(f"Email: {email}")
     print("Items Purchased:")
     for product, quantity in cart:
-        print(f"{quantity} x {product[0]} - ${product[1]:.2f} = ${product[1] * quantity:.2f}")
-    print(f"Total: ${total_cost:.2f}")
+        print(f"{product[0]} - Quantity: {quantity} - Price: ${product[1] * quantity:.2f}")
+    print(f"Total Cost: ${total_cost:.2f}")
     print(f"Delivery Address: {address}")
-    print("Your items will be delivered in 3 days.")
-    print("Payment will be accepted upon delivery.")
+    print("Your items will be delivered in 3 days. Payment will be accepted after successful delivery.")
 
 def validate_name(name):
     parts = name.split()
     return len(parts) == 2 and all(part.isalpha() for part in parts)
 
 def validate_email(email):
-    if "@" not in email or email.count("@") != 1:
-        return False
-    username, domain = email.split("@")
-    return username.isalnum() and "." in domain and len(domain.split(".")) >= 2
+    return "@" in email
 
 def main():
     name = input("Enter your name (First Last): ")
@@ -103,7 +95,7 @@ def main():
 
         print(f"\nProducts in {selected_category}:")
         display_products(products[selected_category])
-       
+        
         while True:
             print("\nOptions:")
             print("1. Select a product to buy")
@@ -118,9 +110,6 @@ def main():
                     product_choice = int(product_choice)
                     product = products[selected_category][product_choice - 1]
                     quantity = input("Enter the quantity you want to buy: ")
-                    if not quantity.isdigit() or int(quantity) <= 0:
-                        print("Invalid quantity. Please enter a positive number.")
-                        continue
                     quantity = int(quantity)
                     add_to_cart(cart, product, quantity)
                     print(f"Added {quantity} of {product[0]} to your cart.")
@@ -130,13 +119,13 @@ def main():
             elif option == '2':
                 sort_order = input("Sort by price (1 for ascending, 2 for descending): ")
                 if sort_order in ['1', '2']:
-                    display_sorted_products(products[selected_category], sort_order)
+                    display_sorted_products(products[selected_category], int(sort_order))
                 else:
                     print("Invalid choice. Please try again.")
 
             elif option == '3':
                 break
-           
+            
             elif option == '4':
                 if cart:
                     total_cost = sum(product[1] * quantity for product, quantity in cart)
