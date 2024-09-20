@@ -41,7 +41,6 @@ def display_products(products_list):
 def display_categories():
     for index, category in enumerate(products.keys(), start=1):
         print(f"{index}. {category}")
-    return len(products)
 
 def add_to_cart(cart, product, quantity):
     cart.append((product, quantity))
@@ -74,7 +73,7 @@ def validate_email(email):
     if "@" not in email or email.count("@") != 1:
         return False
     username, domain = email.split("@")
-    return username and "." in domain and domain.count(".") >= 1
+    return username.isalnum() and "." in domain and len(domain.split(".")) >= 2
 
 def main():
     name = input("Enter your name (First Last): ")
